@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Demo Form Validation</title>
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<style>
+			.txt_red{
+				color: red;
+				font-style: italic;
+			}
+		</style>
+		<!-- jQuery -->
+		<script src="js/jquery.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script>
+
+			function checkName(){
+				var name = document.getElementById("txt_name").value;
+				var check_error_name = document.getElementById("error_name");
+				var regexName = /^[^\d+]*[\d+]{0}[^\d+]*$/;
+
+				if (name == "" || name == null) {
+					check_error_name.innerHTML = "Họ tên không được để trống!";
+				}else if (!regexName.test(name)){
+					check_error_name.innerHTML = "Họ tên không hợp lệ!";
+				}else{
+					check_error_name.innerHTML = "";
+					return name;
+				}
+
+			}
+
+			function checkPhone(){
+				var phone = document.getElementById("txt_phone").value;
+				var check_error_phone = document.getElementById("error_phone");
+				var regexPhone = /^\+?\d{1,3}?[- .]?\(?(?:\d{2,3})\)?[- .]?\d\d\d[- .]?\d\d\d\d$/;
+
+				if (phone == "") {
+					check_error_phone.innerHTML = "SĐT không được để trống!";
+				}else if(!regexPhone.test(phone)){
+					check_error_phone.innerHTML = "Định dạng sđt không đúng";
+				}else if (phone.length != 10){
+					check_error_phone.innerHTML = "SĐT chỉ gồm 10 ký tự";
+				}else{
+					check_error_phone.innerHTML = "";
+					return phone;
+				}
+			}
+
+			function checkEmail(){
+				var email = document.getElementById("txt_email").value;
+				var check_error_email = document.getElementById("error_user");
+				var regexEmail = /\b[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,6}\b/i;
+
+				if (email == ""){
+					check_error_email.innerHTML = "Email không được để trống!";
+				}else if(!regexEmail.test(email)){
+					check_error_email.innerHTML = "Email không hợp lệ!";
+				}else{
+					check_error_email.innerHTML = "";
+					return email;
+				}
+			}
+
+			function checkPass(){
+				var pass = document.getElementById("txt_matKhau").value;
+				var check_error_pass = document.getElementById("error_pass");
+				var regexMatKhau = /\ /;
+
+
+				if(pass == ""){
+					check_error_pass.innerHTML = "Mật khẩu không được để trống!";
+				}else if(regexMatKhau.test(pass)){
+					check_error_pass.innerHTML = "Mật khẩu chứa dấu cách";
+				}else{
+					check_error_pass.innerHTML = "";
+					return pass;
+				}
+			}
+
+			function checkCon_Pass(){
+				var con_pass = document.getElementById("txt_xacNhanMatKhau").value;
+				var check_error_con_pass = document.getElementById("error_con_pass");
+				var regexMatKhau = /\ /;
+				var pass = checkPass();
+
+				if(con_pass == ""){
+					check_error_con_pass.innerHTML = "Mật khẩu không được để trống!";
+				}else if(regexMatKhau.test(con_pass)){
+					check_error_con_pass.innerHTML = "Mật khẩu chứa dấu cách";
+				}else if(con_pass != pass){
+					alert('Mật khẩu xác nhận không trùng khớp!');
+				}else{
+					check_error_con_pass.innerHTML = "";
+					return con_pass;
+				}
+			}
+
+			function validate(){
+				if (checkName() && checkPhone() && checkEmail() && checkPass() && checkCon_Pass()){
+					
+					// Hiển thị dữ liệu khi người dùng nhập đầy đủ thông tin
+					var data = "<table class='table table-bordered table-hover'><label>THÔNG TIN BẠN MỚI ĐĂNG KÝ</label><thead><tr><th>Họ tên</th><th>Phone</th><th>Email</th></tr></thead>";
+					data += "<tbody><tr>";
+
+					data += "<td>"+ checkName() +"</td>";
+					data += "<td>"+ checkPhone() +"</td>";
+					data += "<td>"+ checkEmail() +"</td>";
+
+					data += "</tr></tbody></table>";
+
+					document.getElementById("show_info").innerHTML = data;
+
+				}else{
+					alert("Dữ liệu không được để trống!");
+					return false;
+				}
+				
+				return false;
+			}
+
+		</script>
+
+	</head>
+	<body>
+
+
+		<div class="container">
+			<div class="row" style="margin-top: 10px;">
+				<div class="col-md-6">
+					<form action="" method="POST" onsubmit="return validate();">
+						<legend>Đăng ký tài khoản IT-Plus</legend>
+					
+						<div class="form-group">
+							<label for="">Họ tên <span class="txt_red">(*)</span></label><span class="txt_red" id="error_name"></span>
+							<input type="text" class="form-control" id="txt_name" placeholder="Nhập đầy đủ họ tên" onblur="checkName();" />
+						</div>
+
+						<div class="form-group">
+							<label for="">Số điện thoại <span class="txt_red">(*)</span></label><span class="txt_red" id="error_phone"></span>
+							<input type="text" class="form-control" id="txt_phone" onblur="checkPhone();" />
+						</div>
+
+						<div class="form-group">
+							<label for="">Email/ Tài khoản <span class="txt_red">(*)</span></label><span class="txt_red" id="error_user"></span>
+							<input type="text" class="form-control" id="txt_email" onblur="checkEmail();" />
+						</div>
+
+						<div class="form-group">
+							<label for="">Mật khẩu <span class="txt_red">(*)</span></label><span class="txt_red" id="error_pass"></span>
+							<input type="password" class="form-control" id="txt_matKhau" onblur="checkPass();" />
+						</div>
+
+						<div class="form-group">
+							<label for="">Xác nhận mật khẩu <span class="txt_red">(*)</span></label><span class="txt_red" id="error_con_pass"></span>
+							<input type="password" class="form-control" id="txt_xacNhanMatKhau" onblur="checkCon_Pass();" />
+						</div> <!-- onclick="register(); return false;" -->
+					
+						<button type="submit" class="btn btn-primary">Đăng ký</button>
+						<button type="reset" class="btn btn-danger">Nhập lại</button>
+					</form>
+				</div>
+				<div class="col-md-6" id="show_info">
+					
+				</div>
+			</div>
+		</div>
+
+		
+	</body>
+</html>
